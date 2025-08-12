@@ -1,0 +1,26 @@
+# Tourism Recommendation System Dependencies
+# ================================================
+
+# Core ML Libraries
+pandas>=1.5.0
+numpy>=1.21.0
+scikit-learn>=1.1.0
+
+# Deep Learning
+tensorflow>=2.10.0
+
+# MLOps & Experiment Tracking
+mlflow>=2.0.0
+boto3>=1.20.0  # Required for S3/MinIO artifact storage
+
+# Database Connectivity
+clickhouse-connect>=0.5.0
+
+# Environment Management
+python-dotenv>=0.19.0
+
+# HTTP Requests & Monitoring
+requests>=2.25.0
+
+# Optional: For better performance
+joblib>=1.2.0

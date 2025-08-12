@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  tourism-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - MLFLOW_S3_ENDPOINT_URL=${MLFLOW_S3_ENDPOINT_URL}
+      - clickhouse_host=${clickhouse_host}
+      - clickhouse_port=${clickhouse_port}
+      - clickhouse_user=${clickhouse_user}
+      - clickhouse_database=${clickhouse_database}
+      - clickhouse_table=${clickhouse_table}
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - tourism-api
+    restart: unless-stopped
+
+volumes:
+  logs:
