@@ -187,6 +187,19 @@ async def load_best_model():
         if not model_loaded:
             # Fallback: create a simple baseline model
             logger.warning("No MLflow model found, creating baseline model")
+            
+            # Ensure feature_names is defined for fallback model
+            if not feature_names:
+                feature_names = [
+                    'user_mean', 'user_std', 'user_count', 'user_range',
+                    'place_mean', 'place_std', 'place_count', 'place_popularity',
+                    'category_mean', 'city_mean', 'user_category_pref', 'user_city_pref',
+                    'place_price', 'user_avg_price', 'price_ratio',
+                    'place_rating', 'place_duration', 'user_age',
+                    'user_place_deviation', 'rating_price_ratio',
+                    'global_mean', 'global_std'
+                ]
+            
             from sklearn.ensemble import GradientBoostingRegressor
             model = GradientBoostingRegressor(random_state=42)
             # Train with dummy data to make it functional
