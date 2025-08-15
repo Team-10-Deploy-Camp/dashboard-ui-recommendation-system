@@ -1,0 +1,452 @@
+[
+  {
+    "place_id": "borobudur_001",
+    "place_category": "Budaya",
+    "place_city": "Yogyakarta",
+    "place_price": 50000,
+    "place_average_rating": 4.8,
+    "place_visit_duration_minutes": 180,
+    "place_description": "Ancient Buddhist temple and UNESCO World Heritage Site with stunning sunrise views"
+  },
+  {
+    "place_id": "uluwatu_002", 
+    "place_category": "Budaya",
+    "place_city": "Bali",
+    "place_price": 30000,
+    "place_average_rating": 4.6,
+    "place_visit_duration_minutes": 120,
+    "place_description": "Clifftop temple with traditional Kecak fire dance performances"
+  },
+  {
+    "place_id": "gembira_loka_003",
+    "place_category": "Taman Hiburan",
+    "place_city": "Yogyakarta", 
+    "place_price": 35000,
+    "place_average_rating": 4.2,
+    "place_visit_duration_minutes": 240,
+    "place_description": "Family-friendly zoo and amusement park with various animals and rides"
+  },
+  {
+    "place_id": "ancol_004",
+    "place_category": "Taman Hiburan",
+    "place_city": "Jakarta",
+    "place_price": 125000,
+    "place_average_rating": 4.1,
+    "place_visit_duration_minutes": 360,
+    "place_description": "Large recreational complex with theme parks, beaches, and entertainment"
+  },
+  {
+    "place_id": "komodo_005",
+    "place_category": "Cagar Alam",
+    "place_city": "Flores",
+    "place_price": 200000,
+    "place_average_rating": 4.9,
+    "place_visit_duration_minutes": 480,
+    "place_description": "Home to the legendary Komodo dragons in pristine natural habitat"
+  },
+  {
+    "place_id": "bromo_006",
+    "place_category": "Cagar Alam", 
+    "place_city": "Malang",
+    "place_price": 75000,
+    "place_average_rating": 4.7,
+    "place_visit_duration_minutes": 300,
+    "place_description": "Active volcano with spectacular sunrise views and lunar-like landscape"
+  },
+  {
+    "place_id": "kuta_beach_007",
+    "place_category": "Bahari",
+    "place_city": "Bali",
+    "place_price": 0,
+    "place_average_rating": 4.3,
+    "place_visit_duration_minutes": 180,
+    "place_description": "Famous surf beach with golden sand and vibrant sunset views"
+  },
+  {
+    "place_id": "gili_islands_008",
+    "place_category": "Bahari",
+    "place_city": "Lombok",
+    "place_price": 150000,
+    "place_average_rating": 4.6,
+    "place_visit_duration_minutes": 420,
+    "place_description": "Three tropical islands perfect for snorkeling and diving"
+  },
+  {
+    "place_id": "grand_indonesia_009",
+    "place_category": "Pusat Perbelanjaan",
+    "place_city": "Jakarta",
+    "place_price": 25000,
+    "place_average_rating": 4.4,
+    "place_visit_duration_minutes": 180,
+    "place_description": "Luxury shopping mall with international brands and dining options"
+  },
+  {
+    "place_id": "malioboro_010",
+    "place_category": "Pusat Perbelanjaan",
+    "place_city": "Yogyakarta",
+    "place_price": 10000,
+    "place_average_rating": 4.5,
+    "place_visit_duration_minutes": 120,
+    "place_description": "Historic shopping street with traditional crafts and local delicacies"
+  },
+  {
+    "place_id": "istiqlal_011",
+    "place_category": "Tempat Ibadah",
+    "place_city": "Jakarta",
+    "place_price": 0,
+    "place_average_rating": 4.7,
+    "place_visit_duration_minutes": 90,
+    "place_description": "Largest mosque in Southeast Asia with modern Islamic architecture"
+  },
+  {
+    "place_id": "tanah_lot_012",
+    "place_category": "Tempat Ibadah",
+    "place_city": "Bali",
+    "place_price": 60000,
+    "place_average_rating": 4.5,
+    "place_visit_duration_minutes": 120,
+    "place_description": "Hindu temple on a rock formation surrounded by ocean waves"
+  },
+  {
+    "place_id": "prambanan_013",
+    "place_category": "Budaya",
+    "place_city": "Yogyakarta",
+    "place_price": 50000,
+    "place_average_rating": 4.6,
+    "place_visit_duration_minutes": 150,
+    "place_description": "Hindu temple complex with intricate stone carvings and architecture"
+  },
+  {
+    "place_id": "taman_mini_014",
+    "place_category": "Budaya",
+    "place_city": "Jakarta", 
+    "place_price": 20000,
+    "place_average_rating": 4.0,
+    "place_visit_duration_minutes": 240,
+    "place_description": "Cultural park showcasing Indonesia's diverse ethnic groups and traditions"
+  },
+  {
+    "place_id": "dufan_015",
+    "place_category": "Taman Hiburan",
+    "place_city": "Jakarta",
+    "place_price": 200000,
+    "place_average_rating": 4.3,
+    "place_visit_duration_minutes": 420,
+    "place_description": "Large theme park with thrilling rides and family attractions"
+  },
+  {
+    "place_id": "jatim_park_016",
+    "place_category": "Taman Hiburan",
+    "place_city": "Malang",
+    "place_price": 100000,
+    "place_average_rating": 4.4,
+    "place_visit_duration_minutes": 300,
+    "place_description": "Educational theme park with science exhibits and attractions"
+  },
+  {
+    "place_id": "raja_ampat_017",
+    "place_category": "Cagar Alam",
+    "place_city": "Papua",
+    "place_price": 500000,
+    "place_average_rating": 4.9,
+    "place_visit_duration_minutes": 600,
+    "place_description": "World-class diving destination with incredible marine biodiversity"
+  },
+  {
+    "place_id": "kawah_ijen_018",
+    "place_category": "Cagar Alam",
+    "place_city": "Banyuwangi",
+    "place_price": 100000,
+    "place_average_rating": 4.8,
+    "place_visit_duration_minutes": 360,
+    "place_description": "Volcanic crater with blue flames and sulfur lake"
+  },
+  {
+    "place_id": "parangtritis_019",
+    "place_category": "Bahari",
+    "place_city": "Yogyakarta",
+    "place_price": 15000,
+    "place_average_rating": 4.2,
+    "place_visit_duration_minutes": 180,
+    "place_description": "Black sand beach with mystical legends and paragliding activities"
+  },
+  {
+    "place_id": "tanjung_lesung_020",
+    "place_category": "Bahari",
+    "place_city": "Banten",
+    "place_price": 80000,
+    "place_average_rating": 4.1,
+    "place_visit_duration_minutes": 300,
+    "place_description": "Beach resort area with white sand and water sports"
+  },
+  {
+    "place_id": "plaza_indonesia_021",
+    "place_category": "Pusat Perbelanjaan",
+    "place_city": "Jakarta",
+    "place_price": 30000,
+    "place_average_rating": 4.5,
+    "place_visit_duration_minutes": 180,
+    "place_description": "Upscale shopping center with luxury brands and fine dining"
+  },
+  {
+    "place_id": "pasar_beringharjo_022",
+    "place_category": "Pusat Perbelanjaan",
+    "place_city": "Yogyakarta",
+    "place_price": 5000,
+    "place_average_rating": 4.0,
+    "place_visit_duration_minutes": 120,
+    "place_description": "Traditional market with batik, spices, and local handicrafts"
+  },
+  {
+    "place_id": "masjid_raya_023",
+    "place_category": "Tempat Ibadah",
+    "place_city": "Medan",
+    "place_price": 0,
+    "place_average_rating": 4.4,
+    "place_visit_duration_minutes": 60,
+    "place_description": "Grand mosque with beautiful Islamic architecture and gardens"
+  },
+  {
+    "place_id": "pura_besakih_024",
+    "place_category": "Tempat Ibadah",
+    "place_city": "Bali",
+    "place_price": 60000,
+    "place_average_rating": 4.6,
+    "place_visit_duration_minutes": 120,
+    "place_description": "Mother temple of Bali located on the slopes of Mount Agung"
+  },
+  {
+    "place_id": "keraton_solo_025",
+    "place_category": "Budaya",
+    "place_city": "Solo",
+    "place_price": 25000,
+    "place_average_rating": 4.3,
+    "place_visit_duration_minutes": 120,
+    "place_description": "Royal palace with Javanese cultural performances and museum"
+  },
+  {
+    "place_id": "museum_fatahillah_026",
+    "place_category": "Budaya",
+    "place_city": "Jakarta",
+    "place_price": 5000,
+    "place_average_rating": 4.2,
+    "place_visit_duration_minutes": 90,
+    "place_description": "Historical museum in old town with Jakarta's colonial heritage"
+  },
+  {
+    "place_id": "trans_studio_027",
+    "place_category": "Taman Hiburan",
+    "place_city": "Bandung",
+    "place_price": 180000,
+    "place_average_rating": 4.4,
+    "place_visit_duration_minutes": 360,
+    "place_description": "Indoor theme park with movie-themed attractions and rides"
+  },
+  {
+    "place_id": "floating_market_028",
+    "place_category": "Taman Hiburan",
+    "place_city": "Bandung",
+    "place_price": 25000,
+    "place_average_rating": 4.0,
+    "place_visit_duration_minutes": 180,
+    "place_description": "Unique floating market experience with local food and crafts"
+  },
+  {
+    "place_id": "bunaken_029",
+    "place_category": "Cagar Alam",
+    "place_city": "Manado",
+    "place_price": 150000,
+    "place_average_rating": 4.8,
+    "place_visit_duration_minutes": 420,
+    "place_description": "Marine national park with world-class diving and snorkeling"
+  },
+  {
+    "place_id": "toba_lake_030",
+    "place_category": "Cagar Alam",
+    "place_city": "Medan",
+    "place_price": 50000,
+    "place_average_rating": 4.6,
+    "place_visit_duration_minutes": 480,
+    "place_description": "Largest volcanic lake in the world with Batak cultural heritage"
+  },
+  {
+    "place_id": "seminyak_beach_031",
+    "place_category": "Bahari",
+    "place_city": "Bali",
+    "place_price": 25000,
+    "place_average_rating": 4.4,
+    "place_visit_duration_minutes": 180,
+    "place_description": "Upscale beach area with trendy beach clubs and restaurants"
+  },
+  {
+    "place_id": "thousand_islands_032",
+    "place_category": "Bahari",
+    "place_city": "Jakarta",
+    "place_price": 250000,
+    "place_average_rating": 4.2,
+    "place_visit_duration_minutes": 480,
+    "place_description": "Island chain perfect for weekend getaways and water activities"
+  },
+  {
+    "place_id": "central_park_033",
+    "place_category": "Pusat Perbelanjaan",
+    "place_city": "Jakarta",
+    "place_price": 20000,
+    "place_average_rating": 4.3,
+    "place_visit_duration_minutes": 180,
+    "place_description": "Modern shopping mall with entertainment and dining options"
+  },
+  {
+    "place_id": "cihampelas_walk_034",
+    "place_category": "Pusat Perbelanjaan",
+    "place_city": "Bandung",
+    "place_price": 15000,
+    "place_average_rating": 4.1,
+    "place_visit_duration_minutes": 150,
+    "place_description": "Open-air shopping street with local fashion and street food"
+  },
+  {
+    "place_id": "masjid_agung_035",
+    "place_category": "Tempat Ibadah",
+    "place_city": "Bandung",
+    "place_price": 0,
+    "place_average_rating": 4.3,
+    "place_visit_duration_minutes": 60,
+    "place_description": "Historic grand mosque with beautiful architecture and gardens"
+  },
+  {
+    "place_id": "pura_tirta_empul_036",
+    "place_category": "Tempat Ibadah",
+    "place_city": "Bali",
+    "place_price": 50000,
+    "place_average_rating": 4.5,
+    "place_visit_duration_minutes": 90,
+    "place_description": "Holy spring temple famous for purification rituals"
+  },
+  {
+    "place_id": "gedung_sate_037",
+    "place_category": "Budaya",
+    "place_city": "Bandung",
+    "place_price": 10000,
+    "place_average_rating": 4.2,
+    "place_visit_duration_minutes": 90,
+    "place_description": "Iconic art deco government building with museum and city views"
+  },
+  {
+    "place_id": "house_of_sampoerna_038",
+    "place_category": "Budaya",
+    "place_city": "Surabaya",
+    "place_price": 15000,
+    "place_average_rating": 4.1,
+    "place_visit_duration_minutes": 120,
+    "place_description": "Museum showcasing Indonesian cigarette industry heritage"
+  },
+  {
+    "place_id": "suncity_mall_039",
+    "place_category": "Taman Hiburan",
+    "place_city": "Medan",
+    "place_price": 50000,
+    "place_average_rating": 4.0,
+    "place_visit_duration_minutes": 240,
+    "place_description": "Entertainment complex with shopping, dining, and amusement rides"
+  },
+  {
+    "place_id": "ciputra_waterpark_040",
+    "place_category": "Taman Hiburan",
+    "place_city": "Surabaya",
+    "place_price": 75000,
+    "place_average_rating": 4.2,
+    "place_visit_duration_minutes": 300,
+    "place_description": "Large water park with pools, slides, and family attractions"
+  },
+  {
+    "place_id": "green_canyon_041",
+    "place_category": "Cagar Alam",
+    "place_city": "Pangandaran",
+    "place_price": 35000,
+    "place_average_rating": 4.5,
+    "place_visit_duration_minutes": 240,
+    "place_description": "Green river canyon with cave exploration and boat rides"
+  },
+  {
+    "place_id": "tangkuban_perahu_042",
+    "place_category": "Cagar Alam",
+    "place_city": "Bandung",
+    "place_price": 30000,
+    "place_average_rating": 4.3,
+    "place_visit_duration_minutes": 180,
+    "place_description": "Volcanic crater with hiking trails and mountain views"
+  },
+  {
+    "place_id": "derawan_islands_043",
+    "place_category": "Bahari",
+    "place_city": "Berau",
+    "place_price": 300000,
+    "place_average_rating": 4.7,
+    "place_visit_duration_minutes": 600,
+    "place_description": "Pristine islands with turtle conservation and pristine beaches"
+  },
+  {
+    "place_id": "pink_beach_044",
+    "place_category": "Bahari",
+    "place_city": "Flores",
+    "place_price": 100000,
+    "place_average_rating": 4.6,
+    "place_visit_duration_minutes": 240,
+    "place_description": "Unique pink sand beach perfect for snorkeling and swimming"
+  },
+  {
+    "place_id": "summarecon_mall_045",
+    "place_category": "Pusat Perbelanjaan",
+    "place_city": "Bekasi",
+    "place_price": 20000,
+    "place_average_rating": 4.2,
+    "place_visit_duration_minutes": 180,
+    "place_description": "Large shopping center with diverse retail and dining options"
+  },
+  {
+    "place_id": "paris_van_java_046",
+    "place_category": "Pusat Perbelanjaan",
+    "place_city": "Bandung",
+    "place_price": 15000,
+    "place_average_rating": 4.3,
+    "place_visit_duration_minutes": 180,
+    "place_description": "Modern shopping mall with international brands and entertainment"
+  },
+  {
+    "place_id": "masjid_sultan_047",
+    "place_category": "Tempat Ibadah",
+    "place_city": "Palembang",
+    "place_price": 0,
+    "place_average_rating": 4.4,
+    "place_visit_duration_minutes": 60,
+    "place_description": "Historic mosque with traditional Palembang architecture"
+  },
+  {
+    "place_id": "klenteng_sam_po_kong_048",
+    "place_category": "Tempat Ibadah",
+    "place_city": "Semarang",
+    "place_price": 10000,
+    "place_average_rating": 4.3,
+    "place_visit_duration_minutes": 90,
+    "place_description": "Chinese temple complex honoring Admiral Zheng He"
+  },
+  {
+    "place_id": "lawang_sewu_049",
+    "place_category": "Budaya",
+    "place_city": "Semarang",
+    "place_price": 20000,
+    "place_average_rating": 4.2,
+    "place_visit_duration_minutes": 120,
+    "place_description": "Historic Dutch colonial building with architectural significance"
+  },
+  {
+    "place_id": "fort_rotterdam_050",
+    "place_category": "Budaya",
+    "place_city": "Makassar",
+    "place_price": 15000,
+    "place_average_rating": 4.1,
+    "place_visit_duration_minutes": 120,
+    "place_description": "17th-century Dutch fort with museum and cultural artifacts"
+  }
+]
