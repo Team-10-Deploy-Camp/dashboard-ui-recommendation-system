@@ -1,398 +1,387 @@
-# Tourism Recommendation System 🏖️
+# Tourism Indonesia - AI Recommendations Frontend 🏝️
 
-A production-ready machine learning API for tourism place recommendations using advanced ML models including collaborative filtering, neural networks, and hybrid approaches.
+A modern, responsive Streamlit frontend application for discovering Indonesian tourism destinations with AI-powered personalized recommendations. Built with native Streamlit components and featuring an Indonesian cultural design theme.
 
-[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-Latest-green.svg)](https://fastapi.tiangolo.com/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
-[![MLflow](https://img.shields.io/badge/MLflow-Tracking-orange.svg)](https://mlflow.org/)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Latest-red.svg)](https://streamlit.io/)
+[![ClickHouse](https://img.shields.io/badge/ClickHouse-Database-yellow.svg)](https://clickhouse.com/)
 
-## 🚀 Features
+## ✨ Features
 
-- **Advanced ML Models**: Collaborative Filtering, Neural CF, Hybrid Models, Ensemble Methods
-- **Production Ready**: FastAPI with comprehensive API endpoints
-- **MLOps Integration**: MLflow experiment tracking and model registry
-- **Scalable Architecture**: Docker containerization with NGINX reverse proxy
-- **Real-time Predictions**: High-performance recommendation API
-- **Comprehensive Monitoring**: Health checks and logging
-- **Database Integration**: ClickHouse for analytics data
+- **🎯 Personalized Recommendations**: AI-powered tourism suggestions based on user preferences
+- **🎨 Indonesian Cultural Design**: Modern UI with traditional Indonesian color schemes and themes
+- **📱 Responsive Interface**: Multi-page layout with interactive maps and visualizations
+- **🗺️ Interactive Maps**: Google Maps integration for location discovery
+- **📊 Analytics Dashboard**: Real-time insights and recommendation analytics
+- **🏖️ 50+ Destinations**: Curated Indonesian tourism places across multiple categories
+- **⚡ Real-time Processing**: Fast API integration with comprehensive error handling
 
-## 🏗️ Architecture
+## 🏗️ Application Architecture
 
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   NGINX Proxy   │────│  FastAPI Server  │────│  MLflow Server  │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-                              │                          │
-                    ┌─────────────────┐    ┌─────────────────┐
-                    │   ClickHouse    │    │   MinIO/S3      │
-                    │   Database      │    │   Artifacts     │
-                    └─────────────────┘    └─────────────────┘
+┌─────────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│  Streamlit Frontend │────│  Tourism API     │────│  ClickHouse DB  │
+│  (Port 8501)        │    │  (Port 8000)     │    │  (Port 9000)    │
+└─────────────────────┘    └──────────────────┘    └─────────────────┘
+         │                          │                        │
+    ┌────────────┐        ┌─────────────────┐      ┌─────────────────┐
+    │ UI Components      │  ML Models      │      │  Tourism Data   │
+    │ & Analytics│        │  (Predictions)  │      │  (Live from DB) │
+    └────────────┘        └─────────────────┘      └─────────────────┘
 ```
 
-## 📦 Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Python 3.11+
-- Docker & Docker Compose
-- ClickHouse database access
-- MLflow tracking server
-- MinIO/S3 for artifact storage
+- Python 3.8+
+- ClickHouse database (running)
+- Tourism API backend (optional for offline mode)
 
-### 1. Environment Setup
+### 1. Installation
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd deploycamp
+# Navigate to the tourism frontend directory
+cd tourism_frontend
 
-# Copy environment template
-cp .env.example .env
-
-# Edit .env with your configuration
-nano .env
-```
-
-### 2. Environment Variables
-
-Create a `.env` file with the following configuration:
-
-```env
-# MLflow Configuration
-MLFLOW_TRACKING_URI=http://your-mlflow-server/
-
-# S3/MinIO Configuration (for model artifacts)
-AWS_ACCESS_KEY_ID=your-access-key
-AWS_SECRET_ACCESS_KEY=your-secret-key
-MLFLOW_S3_ENDPOINT_URL=http://your-minio-server:9000
-
-# ClickHouse Database Configuration
-clickhouse_host=your-clickhouse-host
-clickhouse_port=8123
-clickhouse_user=default
-clickhouse_database=tourism_data
-clickhouse_table=mart_ratings_per_user
-```
-
-### 3. Docker Deployment
-
-```bash
-# Build and start services
-docker-compose up -d
-
-# Check service health
-curl http://localhost:8000/health
-```
-
-### 4. Manual Setup (Development)
-
-```bash
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# Create virtual environment (recommended)
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
-pip install -r api_requirements.txt
-
-# Set up environment
-bash setup_environment.sh
-
-# Run the API server
-python tourism_api.py
 ```
 
-## 🔬 ML Pipeline
+### 2. Configuration
 
-### Train Models
+Create a `.env` file in the root directory:
+
+```env
+# API Configuration
+API_BASE_URL=http://localhost:8000
+API_TIMEOUT=30
+
+# ClickHouse Database Configuration
+clickhouse_host=localhost
+clickhouse_port=8123
+clickhouse_user=default
+clickhouse_password=
+clickhouse_database=default
+clickhouse_table=mart_ratings_per_user
+```
+
+### 3. Run the Application
 
 ```bash
-# Train all recommendation models
-python tourism_recommendation_pipeline.py
+# Start the Streamlit app
+streamlit run tourism_frontend/app.py
 
-# Monitor training in MLflow
-# Visit: http://your-mlflow-server
+# Or using the deploy script
+bash tourism_frontend/deploy.sh
 ```
 
-### Available Models
+### 4. Access the App
 
-1. **Collaborative Filtering (SVD)** - Matrix factorization approach
-2. **Neural Collaborative Filtering** - Deep learning recommendation
-3. **Content-Based Filtering** - Feature-based recommendations
-4. **Advanced Hybrid Model** - Enhanced feature engineering with Gradient Boosting
-5. **Ensemble Model** - Combination of multiple approaches
-6. **Popularity Baseline** - Simple popularity-based recommendations
+Open your browser to: `http://localhost:8501`
 
-## 📚 API Documentation
+## 🎯 How to Use
 
-### Base URL
+### Getting Recommendations
+
+1. **Set Your Preferences** (in sidebar):
+   - Age (18-100)
+   - Preferred category (Budaya, Taman Hiburan, Cagar Alam, etc.)
+   - Preferred city (Jakarta, Bali, Yogyakarta, etc.)
+   - Budget range (Low, Medium, High)
+   - Number of recommendations (1-10)
+
+2. **Apply Filters**:
+   - Minimum rating threshold
+   - Maximum price limit
+   - Specific categories or cities
+
+3. **Get Results**: Click "🔍 Get Recommendations" to receive personalized suggestions
+
+### Viewing Results
+
+- **Card View**: Visual cards with place images and details
+- **Table View**: Comprehensive data table with all metrics
+- **Analytics**: Charts and insights about recommendations
+
+## 📊 Available Pages
+
+### 🏠 Home
+- Welcome interface with app overview
+- Quick navigation to main features
+- Indonesian tourism highlights
+
+### 🎯 Recommendations 
+- Main recommendation engine
+- User preference settings
+- Personalized tourism suggestions
+- Filtering and sorting options
+
+### 📊 Analytics (Coming Soon)
+- Recommendation performance metrics
+- User preference analysis
+- Popular destinations insights
+- Rating distribution charts
+
+### ℹ️ About
+- Application information
+- Technology stack details
+- Indonesian tourism overview
+
+## 📁 Project Structure
+
 ```
-http://localhost:8000
+tourism_frontend/
+├── app.py                 # Main Streamlit application
+├── config.py             # Configuration settings
+├── requirements.txt       # Python dependencies
+├── deploy.sh             # Deployment script
+├── components/           # UI components
+│   ├── __init__.py
+│   ├── sidebar.py         # User preference sidebar
+│   ├── place_cards.py     # Place display components  
+│   ├── charts.py          # Data visualization
+│   └── maps.py            # Map components
+├── utils/               # Utility functions
+│   ├── __init__.py
+│   ├── api_client.py      # API integration
+│   ├── data_processing.py # Data processing
+│   ├── clickhouse_loader.py # ClickHouse integration
+│   └── validators.py      # Input validation
+├── data/               # Sample data
+│   └── sample_places.json
+└── assets/             # Static assets
+    └── styles.css         # Custom CSS
 ```
 
-### Key Endpoints
+## 🌏 Indonesian Tourism Categories
 
-#### Health Check
-```http
-GET /health
-```
+### 🏠 Budaya (Culture)
+- Historical sites and museums
+- Traditional villages and heritage
+- Cultural performances and exhibitions
 
-#### Get Recommendations
-```http
-POST /predict
-Content-Type: application/json
+### 🎠 Taman Hiburan (Theme Parks)
+- Amusement parks and entertainment
+- Water parks and recreational facilities
+- Family-friendly attractions
 
-{
-  "user": {
-    "user_age": 25,
-    "preferred_category": "Cultural",
-    "preferred_city": "Jakarta",
-    "budget_range": "medium"
-  },
-  "places": [
-    {
-      "place_id": "place_001",
-      "place_category": "Cultural",
-      "place_city": "Jakarta",
-      "place_price": 50000,
-      "place_average_rating": 4.2,
-      "place_visit_duration_minutes": 120,
-      "place_description": "Historical museum..."
-    }
-  ]
+### 🌳 Cagar Alam (Nature Reserves) 
+- National parks and natural reserves
+- Wildlife sanctuaries and conservation areas
+- Eco-tourism destinations
+
+### 🏖️ Bahari (Marine)
+- Beaches and coastal areas
+- Diving and snorkeling spots
+- Island destinations
+
+### 🛒 Pusat Perbelanjaan (Shopping)
+- Shopping malls and centers
+- Traditional markets and bazaars
+- Retail and commercial areas
+
+### 🕕 Tempat Ibadah (Religious Sites)
+- Mosques, temples, and churches
+- Pilgrimage destinations
+- Spiritual and religious landmarks
+
+## ⚙️ Configuration Options
+
+### App Settings (config.py)
+
+```python
+# API Configuration
+API_BASE_URL = "http://localhost:8000"
+API_TIMEOUT = 30
+
+# Indonesian Tourism Categories
+TOURISM_CATEGORIES = [
+    "Budaya", "Taman Hiburan", "Cagar Alam", 
+    "Bahari", "Pusat Perbelanjaan", "Tempat Ibadah"
+]
+
+# Indonesian Cities
+INDONESIAN_CITIES = [
+    "Jakarta", "Bali", "Yogyakarta", "Bandung",
+    "Surabaya", "Medan", "Semarang", "Palembang"
+]
+
+# UI Colors (Indonesian Theme)
+COLORS = {
+    "primary": "#DC2626",      # Indonesian Red
+    "accent": "#F59E0B",       # Gold
+    "success": "#10B981",     # Nature Green
+    "info": "#3B82F6"         # Ocean Blue
 }
 ```
 
-#### Top-K Recommendations
-```http
-POST /recommend?top_k=5
-```
+### ClickHouse Integration
 
-#### Model Information
-```http
-GET /model/info
-```
+- Live data loading from tourism database
+- Dynamic place information and ratings
+- Real-time recommendation scoring
+- Analytics data for insights
 
-### Interactive API Documentation
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
+## 🔍 Features Overview
 
-## 🛠️ Development
+### 🎯 Smart Recommendations
+- Personalized suggestions based on user profile
+- Multi-factor filtering (age, budget, preferences)
+- Confidence scoring for each recommendation
+- Real-time data from ClickHouse database
 
-### Project Structure
+### 🎨 Indonesian Design Theme
+- Traditional Indonesian color palette
+- Cultural design elements and patterns  
+- Modern responsive layout
+- Native Streamlit components
 
-```
-deploycamp/
-├── tourism_api.py                    # Main FastAPI application
-├── tourism_recommendation_pipeline.py # ML training pipeline
-├── docker-compose.yml               # Multi-container setup
-├── Dockerfile                       # API container definition
-├── nginx.conf                       # Reverse proxy configuration
-├── requirements.txt                 # Core ML dependencies
-├── api_requirements.txt             # API-specific dependencies
-├── .env.example                     # Environment template
-├── .gitignore                       # Git ignore rules
-├── tests/
-│   ├── test_api.py                 # API tests
-│   ├── simple_api_test.py          # Basic functionality tests
-│   └── demo_examples.py            # Usage examples
-├── deployment/
-│   ├── deploy_to_vm.sh             # VM deployment script
-│   ├── start_api.sh                # API startup script
-│   └── setup_environment.sh       # Environment setup
-├── monitoring/
-│   ├── mlflow_monitor.py           # MLflow monitoring
-│   └── mlflow_diagnostic.py       # Diagnostic tools
-└── docs/
-    ├── API_DEPLOYMENT_GUIDE.md     # Deployment guide
-    └── VM_DEPLOYMENT_STRATEGY.md   # VM strategy
-```
+### 📊 Analytics & Insights
+- Recommendation performance metrics
+- User preference analysis
+- Tourism trends and patterns
+- Interactive data visualizations
 
-### Running Tests
-
-```bash
-# Basic API functionality test
-python simple_api_test.py
-
-# Full API test suite
-python test_api.py
-
-# Demo examples
-python demo_examples.py
-```
-
-### Model Development
-
-```bash
-# Unified model testing
-python wdr_test_unified_models.py
-
-# MLflow monitoring
-python mlflow_monitor.py
-
-# Diagnostic checks
-python mlflow_diagnostic.py
-```
-
-## 🔧 Configuration
-
-### Model Selection Priority
-
-The API automatically loads the best available model in this priority order:
-1. `tourism-advanced-hybrid-gb` (Best performing)
-2. `wdr-tourism-advanced-hybrid-gb`
-3. `tourism-neural-cf`
-4. `wdr-tourism-neural-cf`
-5. `tourism-ensemble-svd`
-6. `wdr-tourism-ensemble-svd`
-
-### Performance Tuning
-
-#### API Configuration
-- Workers: Adjust `--workers` in Docker CMD
-- Memory: Configure Docker memory limits
-- Caching: Enable response caching for frequently accessed data
-
-#### Model Configuration
-- Feature Engineering: Modify feature extraction in `create_feature_vector()`
-- Hyperparameters: Adjust in respective training functions
-- Ensemble Weights: Configure in `train_ensemble_model()`
-
-## 📊 Monitoring & Observability
-
-### MLflow Tracking
-- **Experiments**: All model training tracked
-- **Metrics**: RMSE, MAE, F1-Score, NDCG@10
-- **Artifacts**: Models, scalers, and preprocessors
-- **Parameters**: All hyperparameters logged
-
-### Health Monitoring
-```bash
-# API health check
-curl http://localhost:8000/health
-
-# Container health
-docker-compose ps
-
-# Logs
-docker-compose logs tourism-api
-```
-
-### Performance Metrics
-- **Model Performance**: RMSE < 0.85 (target)
-- **API Response Time**: < 200ms (typical)
-- **Throughput**: 100+ requests/second
-- **Availability**: 99.9% uptime target
+### 🚀 Performance
+- Fast loading with caching
+- Efficient API integration
+- Real-time data processing
+- Responsive user interface
 
 ## 🚀 Deployment
 
-### Docker Compose (Recommended)
+### Development Mode
 ```bash
-docker-compose up -d
+cd tourism_frontend
+streamlit run app.py
 ```
 
-### VM Deployment
+### Production Mode
 ```bash
-bash deploy_to_vm.sh
+# Using the deployment script
+bash tourism_frontend/deploy.sh
+
+# Or with custom settings
+streamlit run app.py --server.port 8501 --server.address 0.0.0.0
 ```
 
-### Manual Deployment
+### Running in Background
 ```bash
-bash start_api.sh
+# Use screen session (current setup)
+screen -dmS tourism_frontend bash -c "source .venv/bin/activate && streamlit run app.py --server.port 8501 --server.address 0.0.0.0"
+
+# Check running sessions
+screen -ls
+
+# Attach to session
+screen -r tourism_frontend
 ```
 
-See detailed deployment guides:
-- [API Deployment Guide](API_DEPLOYMENT_GUIDE.md)
-- [VM Deployment Strategy](VM_DEPLOYMENT_STRATEGY.md)
-
-## 🔐 Security
-
-### Environment Protection
-- `.env` files are gitignored
-- Credentials loaded from environment variables
-- No hardcoded secrets in code
-
-### API Security
-- CORS configuration for production
-- Input validation with Pydantic
-- Rate limiting (configure as needed)
-- Health check endpoints
-
-### Best Practices
-- Run containers as non-root user
-- Regular credential rotation
-- Secure NGINX configuration
-- SSL/TLS termination at proxy level
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Development Setup
-```bash
-# Install development dependencies
-pip install -r requirements.txt -r api_requirements.txt
-
-# Run pre-commit hooks (if configured)
-pre-commit run --all-files
-
-# Run tests
-python -m pytest tests/
-```
-
-## 📈 Performance Benchmarks
-
-| Model Type | RMSE | MAE | F1-Score | NDCG@10 |
-|------------|------|-----|----------|---------|
-| Advanced Hybrid GB | 0.82 | 0.65 | 0.78 | 0.85 |
-| Neural CF | 0.85 | 0.67 | 0.76 | 0.82 |
-| Ensemble | 0.84 | 0.66 | 0.77 | 0.83 |
-| Collaborative SVD | 0.90 | 0.72 | 0.74 | 0.80 |
-| Content-Based | 0.95 | 0.75 | 0.72 | 0.78 |
-| Popularity Baseline | 1.10 | 0.85 | 0.65 | 0.70 |
-
-## 🆘 Troubleshooting
+## 🔍 Troubleshooting
 
 ### Common Issues
 
-#### Model Loading Failures
+#### API Connection Failed
 ```bash
-# Check MLflow connection
-python mlflow_diagnostic.py
+# Check if API is running
+curl http://localhost:8000/health
 
-# Verify environment variables
-python -c "import os; print(os.getenv('MLFLOW_TRACKING_URI'))"
+# Verify configuration
+grep API_BASE_URL .env
 ```
 
-#### Database Connection Issues
+#### ClickHouse Connection Issues
 ```bash
-# Test ClickHouse connection
-python -c "
-import clickhouse_connect
-client = clickhouse_connect.get_client(host='your-host')
-print(client.query('SELECT 1').result_rows)
-"
+# Test ClickHouse connectivity
+telnet localhost 8123
+
+# Check ClickHouse container
+docker ps | grep clickhouse
 ```
 
-#### API Performance Issues
-```bash
-# Monitor resource usage
-docker stats tourism-api
+#### No Recommendations Shown
+- Check user preferences are valid
+- Verify filter settings aren't too restrictive
+- Ensure ClickHouse has tourism data
+- Try broadening search criteria
 
-# Check logs
-docker logs tourism-api --tail 100
+#### Performance Issues
+- Clear Streamlit cache: Delete `.streamlit` folder
+- Check available memory and CPU
+- Verify ClickHouse query performance
+
+## 📝 Dependencies
+
+### Core Requirements
+```
+streamlit>=1.28.0      # Web framework
+pandas>=1.5.0          # Data manipulation
+plotly>=5.0.0          # Interactive charts
+requests>=2.25.0       # API client
+clickhouse-connect>=0.5.0  # Database connectivity
+python-dotenv>=0.19.0  # Environment management
 ```
 
-### Support
+### Optional Features
+```
+numpy>=1.21.0          # Numerical computing
+scikit-learn>=1.1.0    # ML utilities (if needed)
+pillow>=8.0.0          # Image processing
+```
 
-- **Documentation**: Check the `/docs` directory
-- **Issues**: Open GitHub issues for bugs
-- **Performance**: Profile with MLflow metrics
+## 🏁 Performance Metrics
+
+### Application Performance
+| Metric | Target | Typical |
+|--------|--------|---------|
+| Page Load Time | < 3s | 1-2s |
+| API Response | < 500ms | 200-300ms |
+| Database Query | < 1s | 300-500ms |
+| Recommendation Generation | < 2s | 1s |
+
+### Resource Usage
+- **Memory**: ~200-400MB (typical)
+- **CPU**: Low usage, spikes during data processing
+- **Storage**: ~50MB app + data cache
+- **Network**: Minimal, API calls only
+
+## 🤝 Contributing
+
+### Development Setup
+```bash
+# Clone and setup
+git clone <repository-url>
+cd tourism_frontend
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run in development mode
+streamlit run app.py
+```
+
+### Code Structure Guidelines
+- Follow Streamlit best practices
+- Use native components when possible
+- Keep Indonesian cultural theme consistent
+- Add comprehensive error handling
+- Document all functions and components
+
+### Contribution Areas
+- UI/UX improvements
+- New visualization components
+- Performance optimizations
+- Additional tourism categories
+- Enhanced filtering options
 
 ## 📄 License
 
@@ -400,14 +389,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- MLflow for experiment tracking
-- FastAPI for the excellent web framework
-- scikit-learn and TensorFlow for ML capabilities
-- ClickHouse for analytics database
-- Docker for containerization
+- **Streamlit** for the excellent web framework
+- **ClickHouse** for high-performance analytics database
+- **Plotly** for interactive data visualizations
+- **Indonesian Tourism Ministry** for inspiration
+- **Open Source Community** for tools and libraries
 
 ---
 
-**Happy Recommending! 🎯**
-
-For more detailed information, check the documentation in the `/docs` directory.
+**🏝️ Discover Indonesia with AI-Powered Recommendations! 🎯**
