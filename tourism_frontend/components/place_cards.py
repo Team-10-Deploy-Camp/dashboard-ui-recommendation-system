@@ -38,7 +38,7 @@ def render_place_card(place: Dict[str, Any], prediction: Dict[str, Any] = None) 
     """Render a single place card using native Streamlit components."""
     
     # Extract data
-    place_name = place['place_id'].replace('_', ' ').title()
+    place_name = place.get('place_name', place['place_id'].replace('_', ' ').title())
     category = place['place_category']
     city = place['place_city']
     price = place['place_price']
@@ -207,7 +207,7 @@ def render_comparison_table(places: List[Dict[str, Any]], predictions: List[Dict
         prediction = prediction_lookup.get(place['place_id'])
         
         row = {
-            'Place': place['place_id'].replace('_', ' ').title(),
+            'Place': place.get('place_name', place['place_id'].replace('_', ' ').title()),
             'Category': place['place_category'],
             'City': place['place_city'],
             'Price (IDR)': format_currency(place['place_price']),

@@ -120,22 +120,43 @@ def render_home_page():
     4. **Find Locations** - Use the Maps tab to view places on Google Maps and get directions
     """)
     
-    # API Status
+    # System Status
     st.markdown("---")
     st.subheader("🔌 System Status")
     
-    try:
-        health = cached_get_health()
-        
-        if health.get('status') == 'healthy':
-            st.success("✅ API Status: Connected")
-            if health.get('model_name'):
-                st.info(f"🤖 Model: {health.get('model_name', 'Unknown')}")
-        else:
-            st.warning("⚠️ API Status: Issues detected")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("**API Status:**")
+        try:
+            health = cached_get_health()
+            
+            if health.get('status') == 'healthy':
+                st.success("✅ AI API: Connected")
+                if health.get('model_name'):
+                    st.info(f"🤖 Model: {health.get('model_name', 'Unknown')}")
+            else:
+                st.warning("⚠️ AI API: Issues detected")
+                    
+        except Exception as e:
+            st.error(f"❌ AI API: Offline ({str(e)})")
+    
+    with col2:
+        st.markdown("**Data Source:**")
+        try:
+            from utils.clickhouse_loader import test_clickhouse_connection
+            clickhouse_status = test_clickhouse_connection()
+            
+            if clickhouse_status['status'] == 'connected':
+                st.success("✅ ClickHouse: Connected")
+                st.info(f"🗄️ Database: {clickhouse_status['database']}")
+            else:
+                st.warning("⚠️ ClickHouse: Using sample data")
+                st.info("📁 Fallback: JSON file")
                 
-    except Exception as e:
-        st.error(f"❌ System Status: Offline ({str(e)})")
+        except Exception as e:
+            st.warning("⚠️ Database: Using sample data")
+            st.info("📁 Fallback: JSON file")
 
 def render_recommendations_page():
     """Render the recommendations page."""
@@ -213,9 +234,22 @@ def render_recommendations_page():
                     predictions = recommendations['top_recommendations']
                     
                     # Get recommended places in order
+                    # Create a mapping from numeric place_id back to original places
+                    place_id_map = {}
+                    for place in places_for_api:
+                        # Calculate the same numeric ID as in prepare_api_payload
+                        place_id = place.get('place_id')
+                        if isinstance(place_id, str):
+                            numeric_place_id = abs(hash(place_id)) % 1000000
+                        else:
+                            numeric_place_id = int(place_id) if place_id is not None else 0
+                        place_id_map[numeric_place_id] = place
+                    
                     recommended_places = []
                     for pred in predictions:
-                        place = next((p for p in places_for_api if p['place_id'] == pred['place_id']), None)
+                        # API returns place_id as string, convert to int for lookup
+                        place_id_int = int(pred['place_id'])
+                        place = place_id_map.get(place_id_int)
                         if place:
                             recommended_places.append(place)
                     
@@ -402,7 +436,7 @@ def render_maps_page():
         col1, col2 = st.columns([1, 1])
         
         with col1:
-            st.write(f"**Name:** {selected_place['place_id'].replace('_', ' ').title()}")
+            st.write(f"**Name:** {selected_place.get('place_name', selected_place['place_id'].replace('_', ' ').title())}")
             st.write(f"**Category:** {selected_place['place_category']}")
             st.write(f"**City:** {selected_place['place_city']}")
             
@@ -442,22 +476,46 @@ def main():
     sidebar_preferences = render_sidebar()
     st.session_state['sidebar_preferences'] = sidebar_preferences
     
-    # Create navigation tabs using native Streamlit
-    tab1, tab2, tab3, tab4 = st.tabs(["🏠 Home", "🎯 Recommendations", "🗺️ Maps", "ℹ️ About"])
+    # Check if form was submitted and switch to Recommendations
+    if sidebar_preferences.get('submitted', False):
+        st.session_state.active_tab_index = 1  # Recommendations tab
     
-    with tab1:
+    # Initialize active tab if not set
+    if 'active_tab_index' not in st.session_state:
+        st.session_state.active_tab_index = 0
+    
+    # Create custom tab interface with buttons
+    tab_names = ["🏠 Home", "🎯 Recommendations", "🗺️ Maps", "ℹ️ About"]
+    
+    # Create columns for tab buttons
+    cols = st.columns(len(tab_names))
+    
+    for i, (col, tab_name) in enumerate(zip(cols, tab_names)):
+        with col:
+            # Highlight active tab
+            if i == st.session_state.active_tab_index:
+                if st.button(tab_name, key=f"tab_{i}", use_container_width=True, type="primary"):
+                    st.session_state.active_tab_index = i
+                    st.rerun()
+            else:
+                if st.button(tab_name, key=f"tab_{i}", use_container_width=True):
+                    st.session_state.active_tab_index = i
+                    st.rerun()
+    
+    st.divider()
+    
+    # Render content based on active tab
+    if st.session_state.active_tab_index == 0:
         st.session_state.current_page = 'Home'
         render_home_page()
-        
-    with tab2:
+    elif st.session_state.active_tab_index == 1:
         st.session_state.current_page = 'Recommendations'
+        # User submitted recommendations, content will be displayed below
         render_recommendations_page()
-        
-    with tab3:
+    elif st.session_state.active_tab_index == 2:
         st.session_state.current_page = 'Maps'
         render_maps_page()
-        
-    with tab4:
+    elif st.session_state.active_tab_index == 3:
         st.session_state.current_page = 'About'
         render_about_page()
 

@@ -15,7 +15,7 @@ def render_place_map_links(place: Dict[str, Any]) -> None:
         place: Place data dictionary
     """
     maps_data = get_place_maps_data(place)
-    place_name = place['place_id'].replace('_', ' ').title()
+    place_name = place.get('place_name', place['place_id'].replace('_', ' ').title())
     
     st.markdown(f"### 🗺️ Map: {place_name}")
     
@@ -45,7 +45,7 @@ def render_places_map_grid(places: List[Dict[str, Any]], max_places: int = 6) ->
     
     for i, place in enumerate(places[:max_places]):
         maps_data = get_place_maps_data(place)
-        place_name = place['place_id'].replace('_', ' ').title()
+        place_name = place.get('place_name', place['place_id'].replace('_', ' ').title())
         city = place['place_city']
         
         col1, col2, col3 = st.columns([2, 1, 1])
@@ -75,7 +75,7 @@ def render_interactive_map_selector(places: List[Dict[str, Any]]) -> Dict[str, A
     st.markdown("### 🗺️ Explore Places on Map")
     
     # Place selector
-    place_names = [p['place_id'].replace('_', ' ').title() for p in places]
+    place_names = [p.get('place_name', p['place_id'].replace('_', ' ').title()) for p in places]
     selected_index = st.selectbox(
         "Choose a place to view on map:",
         range(len(places)),
@@ -99,7 +99,7 @@ def render_map_summary_stats(places: List[Dict[str, Any]]) -> None:
     from utils.maps import get_place_coordinates
     
     # Count places with coordinates
-    places_with_coords = sum(1 for place in places if get_place_coordinates(place['place_id']))
+    places_with_coords = sum(1 for place in places if get_place_coordinates(place['place_id'], place))
     
     # Count cities
     cities = set(place['place_city'] for place in places)

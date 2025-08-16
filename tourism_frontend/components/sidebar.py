@@ -6,6 +6,26 @@ import streamlit as st
 from typing import Dict, Any
 from config import TOURISM_CATEGORIES, INDONESIAN_CITIES, BUDGET_RANGES, COLORS
 
+@st.cache_data(ttl=300)
+def get_available_cities() -> list:
+    """Get available cities from ClickHouse with fallback to config."""
+    try:
+        from utils.clickhouse_loader import get_cities_from_clickhouse
+        return get_cities_from_clickhouse()
+    except Exception:
+        # Fallback to hardcoded cities
+        return INDONESIAN_CITIES
+
+@st.cache_data(ttl=300)
+def get_available_categories() -> list:
+    """Get available categories from ClickHouse with fallback to config."""
+    try:
+        from utils.clickhouse_loader import get_categories_from_clickhouse
+        return get_categories_from_clickhouse()
+    except Exception:
+        # Fallback to hardcoded categories
+        return TOURISM_CATEGORIES
+
 def render_user_preferences_form() -> Dict[str, Any]:
     """Render user preferences form in sidebar using native Streamlit."""
     
@@ -30,18 +50,22 @@ def render_user_preferences_form() -> Dict[str, Any]:
         st.write("")
         st.markdown("### 🎯 Travel Preferences")
         
+        # Get dynamic category list from ClickHouse
+        available_categories = get_available_categories()
         preferred_category = st.selectbox(
             "What interests you most?",
-            options=["All Categories"] + TOURISM_CATEGORIES,
+            options=["All Categories"] + available_categories,
             index=0,
-            help="Choose the type of places you'd like to explore"
+            help="Choose the type of places you'd like to explore (loaded from database)"
         )
         
+        # Get dynamic city list from ClickHouse
+        available_cities = get_available_cities()
         preferred_city = st.selectbox(
             "Which city to explore?",
-            options=["All Cities"] + INDONESIAN_CITIES,
+            options=["All Cities"] + available_cities,
             index=0,
-            help="Select your preferred destination city"
+            help="Select your preferred destination city (loaded from database)"
         )
         
         budget_range = st.selectbox(

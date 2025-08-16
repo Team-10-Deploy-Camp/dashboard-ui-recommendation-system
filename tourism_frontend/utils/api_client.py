@@ -84,13 +84,50 @@ class TourismAPIClient:
     def get_recommendations(self, user_prefs: Dict[str, Any], places: List[Dict[str, Any]], top_k: int = 5) -> Dict[str, Any]:
         """Get top-K recommendations for a user."""
         try:
-            payload = {
-                "user": user_prefs,
-                "places": places
+            # Format user preferences according to API spec
+            user_data = {
+                "user_age": user_prefs.get('user_age', 25)
             }
             
-            response = self._make_request('POST', f'/recommend?top_k={top_k}', json=payload)
-            return response.json()
+            # Add optional user preferences if available
+            if 'preferred_category' in user_prefs and user_prefs['preferred_category']:
+                user_data["preferred_category"] = user_prefs['preferred_category']
+            if 'preferred_city' in user_prefs and user_prefs['preferred_city']:
+                user_data["preferred_city"] = user_prefs['preferred_city']
+            if 'budget_range' in user_prefs and user_prefs['budget_range']:
+                user_data["budget_range"] = user_prefs['budget_range']
+            
+            # Format places according to API spec
+            places_data = []
+            for place in places:
+                place_data = {
+                    "place_id": str(place.get('place_id', 0)),  # API expects string
+                    "place_category": place.get('place_category', 'Unknown'),
+                    "place_city": place.get('place_city', 'Unknown'),
+                    "place_price": float(place.get('place_price') or 0),
+                    "place_average_rating": float(place.get('place_average_rating') or 0),
+                    "place_visit_duration_minutes": max(30, int(place.get('place_visit_duration_minutes') or 30))  # API requires >= 30
+                }
+                places_data.append(place_data)
+            
+            # Create the request payload in the correct format
+            payload = {
+                "user": user_data,
+                "places": places_data
+            }
+            
+            # Add top_k as query parameter
+            params = {"top_k": top_k} if top_k != 5 else {}
+            
+            # Use recommendation endpoint
+            response = self._make_request('POST', '/recommend', json=payload, params=params)
+            result = response.json()
+            
+            # The API already returns top recommendations sorted by rating
+            # Return in the expected format for the frontend
+            return {
+                "top_recommendations": result.get("top_recommendations", [])
+            }
         except Exception as e:
             logger.error(f"Recommendation request failed: {e}")
             raise
@@ -98,7 +135,7 @@ class TourismAPIClient:
     def reload_model(self) -> Dict[str, Any]:
         """Trigger model reload."""
         try:
-            response = self._make_request('GET', '/model/reload')
+            response = self._make_request('POST', '/model/reload')
             return response.json()
         except Exception as e:
             logger.error(f"Model reload failed: {e}")
@@ -194,8 +231,18 @@ def get_recommendations_with_progress(user_prefs: Dict[str, Any], places: List[D
             st.error("🤖 **Service Unavailable**: The AI model is not loaded or unavailable.")
             st.info("💡 **Tip**: Wait a few moments and try again, or contact the system administrator.")
         elif e.response.status_code == 422:
-            st.error("📝 **Validation Error**: The input data format is incorrect.")
-            st.info("💡 **Tip**: Check your preferences and try again.")
+            try:
+                error_detail = e.response.json()
+                if "Failed to enforce schema" in str(error_detail):
+                    st.error("🤖 **Model Processing Error**: The ML model is having issues with data processing.")
+                    st.info("💡 **Status**: The API is receiving data correctly, but the model has an internal tensor processing issue.")
+                    st.info("🔧 **For developers**: Model expects tensor input but received list format - this is an API-side issue.")
+                else:
+                    st.error("📝 **Validation Error**: The input data format is incorrect.")
+                    st.info("💡 **Tip**: Check your preferences and try again.")
+            except:
+                st.error("📝 **Validation Error**: The input data format is incorrect.")
+                st.info("💡 **Tip**: Check your preferences and try again.")
         else:
             st.error(f"🌐 **HTTP Error**: Server returned status code {e.response.status_code}")
         raise

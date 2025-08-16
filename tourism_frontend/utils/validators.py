@@ -24,8 +24,15 @@ def validate_category(category: Optional[str]) -> Tuple[bool, str]:
     if category is None or category == "All":
         return True, ""
     
-    if category not in TOURISM_CATEGORIES:
-        return False, f"Invalid category. Must be one of: {', '.join(TOURISM_CATEGORIES)}"
+    try:
+        from utils.clickhouse_loader import get_categories_from_clickhouse
+        valid_categories = get_categories_from_clickhouse()
+    except Exception:
+        # Fallback to hardcoded categories
+        valid_categories = TOURISM_CATEGORIES
+    
+    if category not in valid_categories:
+        return False, f"Invalid category. Must be one of: {', '.join(valid_categories)}"
     
     return True, ""
 
@@ -34,8 +41,15 @@ def validate_city(city: Optional[str]) -> Tuple[bool, str]:
     if city is None or city == "All":
         return True, ""
     
-    if city not in INDONESIAN_CITIES:
-        return False, f"Invalid city. Must be one of: {', '.join(INDONESIAN_CITIES)}"
+    # Get dynamic city list from ClickHouse with fallback
+    try:
+        from utils.clickhouse_loader import get_cities_from_clickhouse
+        available_cities = get_cities_from_clickhouse()
+    except Exception:
+        available_cities = INDONESIAN_CITIES
+    
+    if city not in available_cities:
+        return False, f"Invalid city. Must be one of: {', '.join(available_cities)}"
     
     return True, ""
 
@@ -254,11 +268,25 @@ def sanitize_user_input(preferences: Dict[str, Any]) -> Dict[str, Any]:
 @st.cache_data
 def get_validation_schema() -> Dict[str, Dict[str, Any]]:
     """Get validation schema for API documentation."""
+    # Get dynamic city list from ClickHouse with fallback
+    try:
+        from utils.clickhouse_loader import get_cities_from_clickhouse
+        available_cities = get_cities_from_clickhouse()
+    except Exception:
+        available_cities = INDONESIAN_CITIES
+    
+    # Get dynamic category list from ClickHouse with fallback
+    try:
+        from utils.clickhouse_loader import get_categories_from_clickhouse
+        available_categories = get_categories_from_clickhouse()
+    except Exception:
+        available_categories = TOURISM_CATEGORIES
+    
     return {
         'user_preferences': {
             'user_age': {'type': 'integer', 'minimum': 18, 'maximum': 100, 'required': True},
-            'preferred_category': {'type': 'string', 'enum': TOURISM_CATEGORIES + [None], 'required': False},
-            'preferred_city': {'type': 'string', 'enum': INDONESIAN_CITIES + [None], 'required': False},
+            'preferred_category': {'type': 'string', 'enum': available_categories + [None], 'required': False},
+            'preferred_city': {'type': 'string', 'enum': available_cities + [None], 'required': False},
             'budget_range': {'type': 'string', 'enum': BUDGET_RANGES, 'required': True},
             'max_price': {'type': 'number', 'minimum': 0, 'maximum': 10000000, 'required': False},
             'min_rating': {'type': 'number', 'minimum': 1.0, 'maximum': 5.0, 'required': False},
@@ -266,8 +294,8 @@ def get_validation_schema() -> Dict[str, Dict[str, Any]]:
         },
         'place_data': {
             'place_id': {'type': 'string', 'required': True},
-            'place_category': {'type': 'string', 'enum': TOURISM_CATEGORIES, 'required': True},
-            'place_city': {'type': 'string', 'enum': INDONESIAN_CITIES, 'required': True},
+            'place_category': {'type': 'string', 'enum': available_categories, 'required': True},
+            'place_city': {'type': 'string', 'enum': available_cities, 'required': True},
             'place_price': {'type': 'number', 'minimum': 0, 'required': True},
             'place_average_rating': {'type': 'number', 'minimum': 1.0, 'maximum': 5.0, 'required': True},
             'place_visit_duration_minutes': {'type': 'integer', 'minimum': 1, 'required': True},

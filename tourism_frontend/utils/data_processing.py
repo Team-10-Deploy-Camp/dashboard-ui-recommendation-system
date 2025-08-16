@@ -10,8 +10,8 @@ import os
 from config import SAMPLE_DATA_PATH, TOURISM_CATEGORIES, INDONESIAN_CITIES
 
 @st.cache_data
-def load_sample_places() -> List[Dict[str, Any]]:
-    """Load sample tourism places data."""
+def load_sample_places_fallback() -> List[Dict[str, Any]]:
+    """Load sample tourism places data as fallback."""
     try:
         # Get the absolute path
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -19,10 +19,23 @@ def load_sample_places() -> List[Dict[str, Any]]:
         
         with open(data_path, 'r', encoding='utf-8') as f:
             places = json.load(f)
+        st.info("📁 Using sample data (ClickHouse unavailable)")
         return places
     except Exception as e:
         st.error(f"Failed to load sample data: {e}")
         return []
+
+@st.cache_data
+def load_sample_places() -> List[Dict[str, Any]]:
+    """Load tourism places data from ClickHouse with fallback to sample data."""
+    try:
+        # Try to load from ClickHouse first
+        from utils.clickhouse_loader import load_places_from_clickhouse
+        return load_places_from_clickhouse()
+    except Exception as e:
+        # Fallback to sample data
+        st.warning("🔄 ClickHouse unavailable, using sample data as fallback")
+        return load_sample_places_fallback()
 
 @st.cache_data
 def get_places_dataframe() -> pd.DataFrame:
@@ -98,6 +111,26 @@ def calculate_statistics(places: List[Dict[str, Any]]) -> Dict[str, Any]:
     if not places:
         return {}
     
+    # Try to get enhanced stats from ClickHouse first
+    try:
+        from utils.clickhouse_loader import get_clickhouse_stats
+        clickhouse_stats = get_clickhouse_stats()
+        if 'error' not in clickhouse_stats:
+            # Use ClickHouse stats if available
+            df = pd.DataFrame(places)
+            enhanced_stats = clickhouse_stats.copy()
+            enhanced_stats.update({
+                'categories': df['place_category'].value_counts().to_dict(),
+                'cities': df['place_city'].value_counts().to_dict(),
+                'price_ranges': df['place_price'].apply(get_price_range_label).value_counts().to_dict(),
+                'avg_price': df['place_price'].mean(),
+                'avg_duration': df['place_visit_duration_minutes'].mean()
+            })
+            return enhanced_stats
+    except Exception:
+        pass  # Fall back to basic calculation
+    
+    # Fallback to basic calculation from loaded places
     df = pd.DataFrame(places)
     
     stats = {
@@ -107,7 +140,8 @@ def calculate_statistics(places: List[Dict[str, Any]]) -> Dict[str, Any]:
         'avg_duration': df['place_visit_duration_minutes'].mean(),
         'categories': df['place_category'].value_counts().to_dict(),
         'cities': df['place_city'].value_counts().to_dict(),
-        'price_ranges': df['place_price'].apply(get_price_range_label).value_counts().to_dict()
+        'price_ranges': df['place_price'].apply(get_price_range_label).value_counts().to_dict(),
+        'data_source': 'Sample Data'
     }
     
     return stats
@@ -142,7 +176,7 @@ def prepare_api_payload(user_prefs: Dict[str, Any], places: List[Dict[str, Any]]
     # Clean user preferences
     cleaned_prefs = validate_user_preferences(user_prefs)
     
-    # Ensure required fields
+    # Prepare user preferences without user_id (not needed for recommendations)
     api_prefs = {
         'user_age': cleaned_prefs.get('user_age', 25),
         'preferred_category': cleaned_prefs.get('preferred_category'),
@@ -150,17 +184,27 @@ def prepare_api_payload(user_prefs: Dict[str, Any], places: List[Dict[str, Any]]
         'budget_range': cleaned_prefs.get('budget_range')
     }
     
-    # Clean places data - ensure all required fields
+    # Clean places data - ensure all required fields and convert place_id to numeric
     api_places = []
-    for place in places:
+    for i, place in enumerate(places):
+        # Convert string place_id to numeric by hashing or using index
+        place_id = place.get('place_id')
+        if isinstance(place_id, str):
+            # Create a numeric ID from string by using a simple hash or index
+            numeric_place_id = abs(hash(place_id)) % 1000000  # Keep it reasonable
+        else:
+            numeric_place_id = int(place_id) if place_id is not None else i + 1
+            
         api_place = {
-            'place_id': place['place_id'],
+            'place_id': numeric_place_id,
             'place_category': place['place_category'],
             'place_city': place['place_city'],
             'place_price': float(place['place_price']),
             'place_average_rating': float(place['place_average_rating']),
             'place_visit_duration_minutes': int(place['place_visit_duration_minutes']),
-            'place_description': place.get('place_description', '')
+            'place_description': place.get('place_description', ''),
+            # Store original place_id for reference
+            'original_place_id': place.get('place_id')
         }
         api_places.append(api_place)
     

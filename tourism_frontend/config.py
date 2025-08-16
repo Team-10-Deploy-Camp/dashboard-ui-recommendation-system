@@ -7,6 +7,14 @@ load_dotenv()
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
 API_TIMEOUT = int(os.getenv("API_TIMEOUT", "30"))
 
+# ClickHouse Configuration
+CLICKHOUSE_HOST = os.getenv("clickhouse_host", "localhost")
+CLICKHOUSE_PORT = int(os.getenv("clickhouse_port", "8123"))
+CLICKHOUSE_USER = os.getenv("clickhouse_user", "default")
+CLICKHOUSE_PASSWORD = os.getenv("clickhouse_password", "")
+CLICKHOUSE_DATABASE = os.getenv("clickhouse_database", "default")
+CLICKHOUSE_TABLE = os.getenv("clickhouse_table", "mart_ratings_per_user")
+
 # Google Maps Configuration (Basic URLs only - no API key needed)
 ENABLE_GOOGLE_MAPS = True  # Always enabled for basic map links
 

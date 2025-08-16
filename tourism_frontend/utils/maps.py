@@ -51,12 +51,20 @@ PLACE_COORDINATES = {
     "silver_beach_030": (-8.1667, 110.5833),
 }
 
-def get_place_coordinates(place_id: str) -> Optional[Tuple[float, float]]:
-    """Get coordinates for a place by its ID."""
+def get_place_coordinates(place_id: str, place_data: Dict[str, Any] = None) -> Optional[Tuple[float, float]]:
+    """Get coordinates for a place by its ID, prioritizing database coordinates."""
+    # First, try to get coordinates from place data (database)
+    if place_data:
+        lat = place_data.get('place_latitude')
+        lng = place_data.get('place_longitude')
+        if lat and lng and lat != 0.0 and lng != 0.0:
+            return (float(lat), float(lng))
+    
+    # Fallback to hardcoded coordinates
     return PLACE_COORDINATES.get(place_id)
 
 def generate_google_maps_url(place_name: str, coordinates: Optional[Tuple[float, float]] = None, 
-                           place_id: str = None) -> str:
+                           place_id: str = None, place_data: Dict[str, Any] = None) -> str:
     """
     Generate Google Maps URL for a place.
     
@@ -64,13 +72,14 @@ def generate_google_maps_url(place_name: str, coordinates: Optional[Tuple[float,
         place_name: Name of the place
         coordinates: Optional (latitude, longitude) tuple
         place_id: Optional place ID to lookup coordinates
+        place_data: Optional place data dictionary with lat/lng from database
     
     Returns:
         Google Maps URL
     """
     # Try to get coordinates from place_id if not provided
     if coordinates is None and place_id:
-        coordinates = get_place_coordinates(place_id)
+        coordinates = get_place_coordinates(place_id, place_data)
     
     # If we have coordinates, use them for precise location
     if coordinates:
@@ -90,7 +99,7 @@ def generate_google_maps_url(place_name: str, coordinates: Optional[Tuple[float,
 # Removed embed URL function - not needed for basic maps integration
 
 def generate_directions_url(destination: str, coordinates: Optional[Tuple[float, float]] = None,
-                          place_id: str = None) -> str:
+                          place_id: str = None, place_data: Dict[str, Any] = None) -> str:
     """
     Generate Google Maps directions URL.
     
@@ -98,13 +107,14 @@ def generate_directions_url(destination: str, coordinates: Optional[Tuple[float,
         destination: Destination name
         coordinates: Optional (latitude, longitude) tuple
         place_id: Optional place ID to lookup coordinates
+        place_data: Optional place data dictionary with lat/lng from database
     
     Returns:
         Google Maps directions URL
     """
     # Try to get coordinates from place_id if not provided
     if coordinates is None and place_id:
-        coordinates = get_place_coordinates(place_id)
+        coordinates = get_place_coordinates(place_id, place_data)
     
     base_url = "https://www.google.com/maps/dir/"
     
@@ -144,12 +154,12 @@ def get_place_maps_data(place: Dict[str, Any]) -> Dict[str, str]:
         Dictionary with different Google Maps URLs
     """
     place_id = place['place_id']
-    coordinates = get_place_coordinates(place_id)
+    coordinates = get_place_coordinates(place_id, place)
     formatted_name = format_place_name_for_maps(place)
     
     return {
-        'view_url': generate_google_maps_url(formatted_name, coordinates, place_id),
-        'directions_url': generate_directions_url(formatted_name, coordinates, place_id),
+        'view_url': generate_google_maps_url(formatted_name, coordinates, place_id, place),
+        'directions_url': generate_directions_url(formatted_name, coordinates, place_id, place),
         'coordinates': coordinates,
         'formatted_name': formatted_name
     }
